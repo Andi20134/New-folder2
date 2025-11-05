@@ -1,26 +1,37 @@
-function showTime() {
-    var date = new Date();
-    var y = date.getyears();
-    var m = date.getMonths();
-    var d = date.getdays();
-    var session = "Am";
+function showCalendar() {
+    const calendarDiv = document.getElementById("MyCalendarDisplay");
+    const today = new Date();
+    const month = today.getMonth();
+    const year = today.getFullYear();
 
-    if (h == 0) {
-        h = 12;
+    const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    let calendarHTML = `<h2>${monthNames[month]} ${year}</h2>`;
+    calendarHTML += "<table><tr>";
+
+    const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    for (let day of dayNames) {
+        calendarHTML += `<th>${day}</th>`;
+    }
+    calendarHTML += "</tr><tr>";
+
+    for (let i = 0; i < firstDay; i++) {
+        calendarHTML += "<td></td>";
     }
 
-    if (h > 12) {
-        h = h - 12;
-        session = "PM";
+    for (let date = 1; date <= daysInMonth; date++) {
+        if ((firstDay + date - 1) % 7 === 0 && date !== 1) {
+            calendarHTML += "</tr><tr>";
+        }
+        calendarHTML += `<td>${date}</td>`;
     }
 
-    h = (h < 10) ? "0" + h : h;
-    m = (m < 10) ? "0" + m : m;
-    s = (s < 10) ? "0" + s : s;
-
-    var time = h + ":" + m + ":" + s + " " + session;
-    document.getElementById("MyCalendarDisplay").innerText = time;
-    setTimeout(showTime, 1000);
+    calendarHTML += "</tr></table>";
+    calendarDiv.innerHTML = calendarHTML;
 }
-
-showTime();
